@@ -33,7 +33,7 @@ class App extends React.Component{
             <div id="container">
                 <div id="logoheader" class="row">
                     <div class="col-2">
-                        <img src="/static/img/Logo.png" width="200px" height="175px" />
+                        {/* <img src="/static/img/Logo.png" width="200px" height="175px" /> */}
                     </div>
 
                     <div col="7">
@@ -46,12 +46,10 @@ class App extends React.Component{
                     <div class="col-4">
                         {/*Display errors during SignUp */}
                         <p>{this.props.errorMessage}</p>
-                        <p>Show login error(s) here (in red)..</p>
                     </div>
 
                     <div col="5">
                     {   /*Display errors during Login */}
-                        <p>Show login error(s) here (in red)..</p>
                     </div>
                 </div>
 
@@ -95,27 +93,14 @@ class SignUp extends React.Component{
         this.ValidateParent = this.ValidateParent.bind(this)
     }
 
-
-
     componentDidMount() {
-
-    
+        console.log("Mounted component")
         fetch('/parent')
             .then(response => {
             return response.json();
             })
-            .then(data => {
-            alert(`Data fetched is ${data}`);
-            });
     }
     
-    // Testing with JQuery .get..
-    //     $.get('/parent', (response) => {
-    //         console.print("Going to fetch data");
-    //         this.setState(response, 
-    //             isLoaded = True);
-    //     });
-    // }
 
 
     ValidateParent() {
@@ -124,9 +109,16 @@ class SignUp extends React.Component{
         if (this.state.parentFname.length < 2) {
                 this.state.errorMessage = "Please enter a valid first name!"
                 //render the error message in the Error-Message tag
+                return(this.state.errorMessage)
             }
-        return(this.state.errorMessage)
+        
+        if (this.state.parentLname.length < 2) {
+            this.state.errorMessage = "Please enter a valid last name!"
+            //render the error message in the Error-Message tag
+            return(this.state.errorMessage)
         }
+
+    }
 
     //Handle Change event 
     handleChange(event) {
@@ -138,7 +130,6 @@ class SignUp extends React.Component{
         this.setState({
             [name]: value
         });
-
     }
     
 
@@ -150,32 +141,29 @@ class SignUp extends React.Component{
         const ErrMsg = this.state.errorMessage
         if (ErrMsg !== "") {
             alert(ErrMsg);
+            this.setState({errorMessage: ""});
+        } else {
+                alert("Ready to insert record");
+                // if fetch returns nothing, insert a new record for the user  
+                // const signupInfo = {
+                //     parentFname = this.state.parentFname
+                //     parentLname = this.state.parentLname
+                //     address1 = this.state.address1
+                //     address2 = this.state.address2
+                //     city = this.state.city
+                //     resState = this.state.resState
+                //     email = this.state.email
+                //     password = this.state.password
+                // }
 
+                // fetch('/Parent/', {
+                //     method: 'post',
+                //     body: JSON.stringify(signupInfo)
+                // })
+                // .then(resp ==> resp.json())
+                // 
+                // }
         }
-        // if fetch returns nothing, insert a new record for the user  
-        // const signupInfo = {
-        //     parentFname = this.state.parentFname
-        //     parentLname = this.state.parentLname
-        //     address1 = this.state.address1
-        //     address2 = this.state.address2
-        //     city = this.state.city
-        //     resState = this.state.resState
-        //     email = this.state.email
-        //     password = this.state.password
-        // }
-
-        // fetch('/Parent/', {
-        //     method: 'post',
-        //     body: JSON.stringify(signupInfo)
-        // })
-        // .then(resp ==> resp.json())
-        // .then(data) => {
-
-        // }
-
-
-        // }
-        
     }
 
     render() {

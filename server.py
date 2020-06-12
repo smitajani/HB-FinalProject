@@ -20,8 +20,9 @@ def homepage():
 def get_parent():
     # Setting to 1 to test getting data back
     parent_info = crud.get_detail("Parent", 1)
-    print("2..", parent_info)
-    return render_template('parent.html', id=1)
+    print("2 In server.py", parent_info)
+    return jsonify({parent_info})
+    #return render_template('parent.html', id=1)
 
 
 print("Calling connect to DB from server.py")

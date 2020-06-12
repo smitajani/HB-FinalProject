@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
 def get_detail(table, id):
     """ Return the record for specific table and id """
-    print(f"1.. In CRUD now, {table}")
+    print(f"1.. In CRUD.py, {table}")
     return db.session.query(Parent).filter(Parent.id == id).first()
 
 
