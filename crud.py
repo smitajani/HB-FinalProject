@@ -11,8 +11,9 @@ if __name__ == '__main__':
 
 
 def get_detail(table, id):
-     """ Return the record for specific table and id """
-     return db.session.query(table).filter(table.id == id).first()
+    """ Return the record for specific table and id """
+    print(f"1.. In CRUD now, {table}")
+    return db.session.query(Parent).filter(Parent.id == id).first()
 
 
 
@@ -87,21 +88,3 @@ def create_school(school_name, office_email, office_phone,
     db.session.commit()
 
     return school
-
-
-# def create_rating(user, movie, score):
-#     """Create and return a new rating."""
-
-#     rating = Rating(user=user, movie=movie, score=score)
-
-#     db.session.add(rating)
-#     db.session.commit()
-
-#     return rating
-
-
-# def get_movie_details(movie_id):
-#     """ Retirn the movie using movie_id """
-#     #return db.session.query(Movie).all()
-#     return Movie.query.filter(Movie.movie_id == movie_id).first()
-

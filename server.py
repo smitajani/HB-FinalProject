@@ -3,7 +3,7 @@
 from flask import (Flask, render_template, request, flash, 
                     session, redirect) 
 
-from model import connect_to_db
+from model import db, connect_to_db
 import crud
 from jinja2 import StrictUndefined
 
@@ -15,6 +15,14 @@ app.jinja_env.undefined = StrictUndefined
 def homepage():
     """View homepage"""
     return render_template("homepage.html")
+
+@app.route('/parent')
+def get_parent():
+    # Setting to 1 to test getting data back
+    parent_info = crud.get_detail("Parent", 1)
+    print("2..", parent_info)
+    return render_template('parent.html', id=1)
+
 
 print("Calling connect to DB from server.py")
 connect_to_db(app)
