@@ -10,11 +10,12 @@ if __name__ == '__main__':
     connect_to_db(app)
 
 
-def get_detail(table, id):
+def get_detail_by_id(table, id):
     """ Return the record for specific table and id """
-    print(f"1.. In CRUD.py, {table}")
-    return db.session.query(Parent).filter(Parent.id == id).first()
-
+    
+    if (table == "Parent"):
+        result = db.session.query(Parent).filter(Parent.id == id).first() 
+    return result
 
 
 def get_all(table):

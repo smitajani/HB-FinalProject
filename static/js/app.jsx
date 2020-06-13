@@ -1,7 +1,3 @@
-// import React from "react";
-// import ReactDOM from "react-DOM";
-// import { Router, Route, IndexRoute, hashHistory } from "react-router";
-
 "use strict";
 
  const Router = window.ReactRouterDOM.BrowserRouter;
@@ -14,7 +10,6 @@
  const hashHistory = window.ReactRouter.BrowserRouter;
  const useLocation = window.ReactRouterDOM.useLocation;
  const useRouteMatch = window.ReactRouterDOM.useRouteMatch;
-
 
  
 class App extends React.Component{
@@ -76,7 +71,10 @@ class SignUp extends React.Component{
 
         //Initial state of component
         this.state = {
+            isLoading: true,
             errorMessage: "",
+
+            id: "",
             parentFname: "",
             parentLname: "",
             address1: "",
@@ -86,19 +84,55 @@ class SignUp extends React.Component{
             email: "",
             password: ""
         };
-
+        
         // Required binding to make `this` work in the callback
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.ValidateParent = this.ValidateParent.bind(this)
     }
 
-    componentDidMount() {
-        console.log("Mounted component")
-        fetch('/parent')
-            .then(response => {
-            return response.json();
-            })
+
+
+    //ComponentDidMount: This function indicates that it 
+    //has been mounted at least once and is ready to 
+    //render data if 'fetch', you have successfully 
+    //fetched the data.
+
+    //Explicitly stating fetch is loaded asynchronously.
+    //'await' ensures asynch tasks wait for the dependent 
+    //task to complete, before it executes - as a result, 
+    // forcing them to be synchronous. 
+
+    async componentDidMount() {
+
+        console.log("1. In component - this.state.id..", this.state.id, "..");
+   
+       
+        if (this.state.id != "") {
+            console.log("In if stmt of component", `/api/parent/${this.state.id}`)
+            const response = await fetch(`/api/parent/${this.state.id}`);
+            const userData = await response.json();
+            
+            this.setState({
+                id: userData.id,
+                parentFname: userData.parentFname,
+                parentLname: userData.parentLname,
+                address1: userData.address1,
+                address2: userData.address2,
+                city: userData.city,
+                resState: userData.resState,
+                email: userData.email,
+                zipcode: userData.zipcode
+            });
+        }
+        this.setState({isLoading: false})
+    // Using Fetch Hook..
+    // fetch(`http://www.example.com/user-list.php?name=${name}`, fetchConfig)
+    // .then(res => res.json())
+    // .then(e => {
+    //   this.setState({ name: e.name });
+    // });
+        
     }
     
 
@@ -168,93 +202,97 @@ class SignUp extends React.Component{
 
     render() {
         return(
-            <div>
-                <h5>Signup to start booking rides</h5>
-                <form onSubmit={this.handleSubmit}>
-                                    
-                    <label>
-                        First Name: 
-                        <input 
-                            name="parentFname" 
-                            type="text" 
-                            value={this.state.parentFname}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
+                // <div> 
+                    (this.state.isLoading) ? 
+                    <div>Loading..</div> :  
+                    <div>
+                        <h5>Signup to start booking rides</h5>
+                        <form onSubmit={this.handleSubmit}>
+                                        
+                            <label>
+                                First Name: 
+                                <input 
+                                    name="parentFname" 
+                                    type="text" 
+                                    value={this.state.parentFname}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
 
-                    <label>
-                        Last Name: 
-                            <input 
-                            name="parentLname" 
-                            type="text" 
-                            value={this.state.parentLname}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
+                            <label>
+                                Last Name: 
+                                    <input 
+                                    name="parentLname" 
+                                    type="text" 
+                                    value={this.state.parentLname}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
 
-                    <label>
-                        Address-1: 
-                        <input 
-                            name="address1" 
-                            type="text" 
-                            value = {this.state.address1}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
+                            <label>
+                                Address-1: 
+                                <input 
+                                    name="address1" 
+                                    type="text" 
+                                    value = {this.state.address1}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
 
-                    <label>
-                        Address-2: 
-                        <input 
-                            name="address2" 
-                            type="text" 
-                            value = {this.state.address2}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
+                            <label>
+                                Address-2: 
+                                <input 
+                                    name="address2" 
+                                    type="text" 
+                                    value = {this.state.address2}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
 
-                    <label>
-                        City: 
-                        <input 
-                            name="city" 
-                            type="text" 
-                            value = {this.state.city}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
-                    
-                    <label>
-                        State: 
-                        <input 
-                            name="resState" 
-                            type="text" 
-                            value = {this.state.resState}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
+                            <label>
+                                City: 
+                                <input 
+                                    name="city" 
+                                    type="text" 
+                                    value = {this.state.city}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
+                            
+                            <label>
+                                State: 
+                                <input 
+                                    name="resState" 
+                                    type="text" 
+                                    value = {this.state.resState}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
 
-                    <label>
-                        Email: 
-                        <input 
-                            name="email" 
-                            type="text" 
-                            value = {this.state.email}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
+                            <label>
+                                Email: 
+                                <input 
+                                    name="email" 
+                                    type="text" 
+                                    value = {this.state.email}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
 
-                    <label>
-                        Password: 
-                        <input 
-                            name="password" 
-                            type="text" 
-                            value = {this.state.password}
-                            onChange={this.handleChange} />
-                    </label>
-                    <br />
-                    <button>Sign Up</button>
-                </form>
-            </div>
-        );
+                            <label>
+                                Password: 
+                                <input 
+                                    name="password" 
+                                    type="text" 
+                                    value = {this.state.password}
+                                    onChange={this.handleChange} />
+                            </label>
+                            <br />
+                            <button>Sign Up</button>
+                        </form>
+                    </div>
+                // </div>
+            );
     }
 }
 
@@ -350,7 +388,7 @@ ReactDOM.render(<Router History={hashHistory}>
                 
                 <Route path="/login/:id" component={ManageAccount} />
 
-                <Route path="/parent/:id" component={SignUp} />
+                <Route path="/api/parent/:id" component={SignUp} />
 
         </Switch>
     </Router>, document.getElementById('app'));
